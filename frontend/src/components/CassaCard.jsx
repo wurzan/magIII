@@ -1,35 +1,46 @@
 // src/components/CassaCard.jsx
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { getCategoryColor } from '../utils/category';
+import '../styles/App.css';
 
 export default function CassaCard({ box, onDelete }) {
-  const pesoTot = box.materiali?.reduce((sum,m)=>sum + m.peso, 0) || 0;
   const borderColor = getCategoryColor(box.categoria);
 
   return (
-    <div style={{
-      border: `3px solid ${borderColor}`,
-      borderRadius: 6,
-      padding: 8,
-      position: 'relative',
-      background: '#fafafa',
-      boxSizing: 'border-box',
-      height: '100%', width: '100%'
-    }}>
-      <strong>{box.codice}</strong><br/>
-      {box.posizione}<br/>
-      <small>{pesoTot.toFixed(1)} kg</small>
-
-      {onDelete && (
+    <div
+      className="cassa-card"
+      style={{ border: `2px solid ${borderColor}` }}
+    >
+      <div className="cassa-header">
+        <div>
+          <strong>{box.codice}</strong>
+          <p>{box.posizione}</p>
+        </div>
         <button
-          onClick={onDelete}
-          style={{
-            position: 'absolute', top: 4, right: 4,
-            border: 'none', background: 'transparent',
-            cursor: 'pointer', fontSize: '1.2em'
-          }}
-        >🗑</button>
-      )}
+          className="no-drag delete-btn"
+          onClick={e => { e.stopPropagation(); onDelete(); }}
+          title="Elimina cassa"
+        >
+          🗑️
+        </button>
+      </div>
+      <div className="cassa-body">
+        <p>
+          <em>
+            {(box.materiali || [])
+              .reduce((sum, m) => sum + (m.peso||0), 0)
+              .toFixed(1)} kg
+          </em>
+        </p>
+      </div>
+      <Link
+        to={`/cassa/${box.id}`}
+        className="no-drag info-btn"
+        title="Dettagli cassa"
+      >
+        ℹ️
+      </Link>
     </div>
   );
 }
