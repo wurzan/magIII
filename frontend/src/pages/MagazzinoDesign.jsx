@@ -13,65 +13,75 @@ export default function MagazzinoDesign({ token }) {
 
   useEffect(() => {
     setAuth(token);
-    api.get('/casse').then(res => {
-      setBoxes(res.data);
-      const initial = res.data.map((b, i) => ({
-        i: String(b.id),
-        x: (i % 6) * 2,
-        y: Math.floor(i / 6) * 2,
-        w: 2, h: 2
-      }));
-      setLayout(initial);
+    // Carica casse e layout
+    Promise.all([
+      api.get('/casse'),
+      api.get('/layout/magazzino')
+    ]).then(([boxesRes, layoutRes]) => {
+      setBoxes(boxesRes.data);
+      // se non esiste layout, crealo di default
+      if (layoutRes.data.length) {
+        setLayout(layoutRes.data);
+      } else {
+        const def = boxesRes.data.map((b,i)=>({
+          i: String(b.id),
+          x: (i%10)*1,           // 10 colonne
+          y: Math.floor(i/10)*1, // riga successiva
+          w: 1, h: 1
+        }));
+        setLayout(def);
+      }
     }).catch(console.error);
   }, [token]);
 
-  // callback quando aggiungo una nuova cassa
-  const handleAdded = newBox => {
-    setBoxes(prev => [...prev, newBox]);
-    setLayout(prev => [
-      ...prev,
-      {
-        i: String(newBox.id),
-        x: (prev.length % 6) * 2,
-        y: Math.floor(prev.length / 6) * 2,
-        w: 2, h: 2
-      }
-    ]);
+  // Salva layout in state + backend
+  const onLayoutChange = newLayout => {
+    setLayout(newLayout);
+    api.put('/layout/magazzino', newLayout).catch(console.error);
   };
 
-  // funzione per eliminare una cassa
+  const handleAdded = newBox => {
+    setBoxes(bs => [...bs, newBox]);
+    const newItem = {
+      i: String(newBox.id),
+      x: (layout.length % 10),
+      y: Math.floor(layout.length / 10),
+      w: 1, h: 1
+    };
+    const updated = [...layout, newItem];
+    setLayout(updated);
+    api.put('/layout/magazzino', updated).catch(console.error);
+  };
+
   const handleDelete = async id => {
-    if (!window.confirm('Sei sicuro di eliminare questa cassa?')) return;
-    try {
-      await api.delete(`/casse/${id}`);
-      setBoxes(boxes.filter(b => b.id !== id));
-      setLayout(layout.filter(l => l.i !== String(id)));
-    } catch (err) {
-      console.error(err);
-      alert('Errore eliminando la cassa');
-    }
+    if (!window.confirm('Eliminare?')) return;
+    await api.delete(`/casse/${id}`);
+    const bs = boxes.filter(b=>b.id!==id);
+    const ly = layout.filter(l=>l.i!==String(id));
+    setBoxes(bs);
+    setLayout(ly);
+    api.put('/layout/magazzino', ly).catch(console.error);
   };
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h2>Magazzino (Progettazione)</h2>
+    <div style={{ padding: 20 }}>
+      <h2>Magazzino — Progettazione</h2>
       <AddCassaForm onAdded={handleAdded} />
 
       <GridLayout
         layout={layout}
-        cols={12}
-        rowHeight={100}
-        width={1200}
-        onLayoutChange={setLayout}
+        cols={10}
+        rowHeight={80}          /* altezza “più bassa” */
+        width={800}             /* 10 celle da 80px */
+        margin={[8,8]}          /* spazio tra le celle */
+        containerPadding={[0,0]}
+        onLayoutChange={onLayoutChange}
         isResizable={false}
-        margin={[12, 12]}
-        containerPadding={[12,12]}
-        compactType={null} 
+        compactType={null}      /* disabilita compact */
       >
         {boxes.map(box => (
-          <div key={box.id}>
-            {/* passo anche handleDelete al card */}
-            <CassaCard box={box} onDelete={() => handleDelete(box.id)} />
+          <div key={box.id} style={{ background: '#fff' }}>
+            <CassaCard box={box} onDelete={()=>handleDelete(box.id)} />
           </div>
         ))}
       </GridLayout>
