@@ -11,31 +11,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Database (in memoria per esempio)
-let casse = [
-  {
-    id: 1,
-    codice: 'CASSA-001',
-    posizione: 'Scaffale A1',
-    destinazioneUso: 'Equipaggiamento di emergenza',
-    categoria: 'elettroutensili',
-    codiceQR: 'https://example.com/cassa/1',
-    materiali: [
-      { id: 'mat1', nome: 'Trapano', peso: 3.2, descrizione: 'Trapano elettrico professionale' },
-      { id: 'mat2', nome: 'Martello', peso: 2, descrizione: 'Martello da carpentiere' }
-    ]
-  },
-  {
-    id: 2,
-    codice: 'CASSA-002',
-    posizione: 'Scaffale B1',
-    destinazioneUso: 'Equipaggiamento di scorta',
-    categoria: 'sicurezza',
-    codiceQR: 'https://example.com/cassa/2',
-    materiali: [
-      { id: 'mat3', nome: 'Estintore', peso: 5, descrizione: 'Estintore a polvere' }
-    ]
-  }
-];
+let casse = [];
 
 // === Login ===
 app.post('/api/login', (req, res) => {
@@ -152,3 +128,5 @@ app.post('/api/pallets', verificaToken, (req, res) => {
   bancali.push(nuovoBancale);
   res.json(nuovoBancale);
 });
+// GET pallets
+app.get('/api/pallets', verificaToken, (req,res)=>res.json(bancali));
