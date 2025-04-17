@@ -60,10 +60,13 @@ export default function MagazzinoDesign({ token }) {
       <GridLayout
         layout={layout}
         cols={12}
-        rowHeight={80}
+        rowHeight={100}
         width={1200}
         onLayoutChange={setLayout}
         isResizable={false}
+        margin={[12, 12]}
+        containerPadding={[12,12]}
+        compactType={null} 
       >
         {boxes.map(box => (
           <div key={box.id}>
