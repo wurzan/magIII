@@ -1,0 +1,37 @@
+/* src/styles/CassaCard.css */
+
+.cassa-card {
+    position: relative;
+    background: #fafafa;
+    border: 2px solid #ccc;     /* il colore verrà sovrascritto inline */
+    border-radius: 4px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  
+    /* RAPPORTO 4:3, per es. larghezza 100%, altezza 75% */
+    aspect-ratio: 4 / 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    padding: 8px;
+  }
+  
+  .cassa-header {
+    font-size: 1.1rem;
+  }
+  
+  .cassa-body {
+    flex: 1;
+    font-size: 0.9rem;
+  }
+  
+  .info-btn {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+  

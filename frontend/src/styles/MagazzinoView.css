@@ -1,0 +1,10 @@
+/* src/styles/MagazzinoView.css */
+
+.mag-view-container {
+    display: grid;
+    /* almeno 200px di base, poi si adatta */
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    padding: 16px;
+  }
+  
