@@ -1,47 +1,25 @@
 // src/pages/MagazzinoView.jsx
-import React, { useEffect, useState } from 'react';
-import GridLayout from 'react-grid-layout';
-import api, { setAuth } from '../utils/api';
-import CassaCard from '../components/CassaCard';
-import 'react-grid-layout/css/styles.css';
-import 'react-resizable/css/styles.css';
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
+import CassaCard from '../components/CassaCard'
+import '../styles/MagazzinoView.css'
 
 export default function MagazzinoView({ token }) {
-  const [boxes, setBoxes] = useState([]);
-  const [layout, setLayout] = useState([]);
+  const [boxes, setBoxes] = useState([])
 
   useEffect(() => {
-    setAuth(token);
-    // carica casse + layout salvato
-    Promise.all([
-      api.get('/casse'),
-      api.get('/layout/magazzino')
-    ]).then(([bRes, lRes]) => {
-      setBoxes(bRes.data);
-      setLayout(lRes.data);
-    }).catch(console.error);
-  }, [token]);
+    axios.get('http://localhost:3001/api/casse', {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    .then(res => setBoxes(res.data))
+    .catch(console.error)
+  }, [token])
 
   return (
-    <div style={{ padding: 20 }}>
-      <h2>Magazzino — Visualizzazione</h2>
-      <GridLayout
-        layout={layout}
-        cols={10}
-        rowHeight={80}
-        width={800}
-        margin={[8,8]}
-        containerPadding={[0,0]}
-        isDraggable={false}
-        isResizable={false}
-        compactType={null}
-      >
-        {boxes.map(box => (
-          <div key={box.id}>
-            <CassaCard box={box} />
-          </div>
-        ))}
-      </GridLayout>
+    <div className="mag-view-container">
+      {boxes.map(box => (
+        <CassaCard key={box.id} box={box} />
+      ))}
     </div>
-  );
+  )
 }
