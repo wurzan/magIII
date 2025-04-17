@@ -10,8 +10,9 @@ const SEGRETO = 'supersegreto'; // da cambiare in produzione
 app.use(cors());
 app.use(bodyParser.json());
 
-// Database (in memoria per esempio)
+// Database casse e bancali
 let casse = [];
+let bancali = [];
 
 // === Login ===
 app.post('/api/login', (req, res) => {
@@ -115,9 +116,6 @@ app.post('/api/sposta-materiale', verificaToken, (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server avviato su http://localhost:${PORT}`);
 });
-// Aggiungi un array in memoria per i bancali
-let bancali = [];
-
 // Endpoint per creare un bancale
 app.post('/api/pallets', verificaToken, (req, res) => {
   const nuovoBancale = {
