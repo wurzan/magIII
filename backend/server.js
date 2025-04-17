@@ -12,6 +12,10 @@ app.use(bodyParser.json());
 
 // Database casse e bancali
 let casse = [];
+let layouts = {
+  magazzino: []
+};
+
 let bancali = [];
 
 // === Login ===
@@ -51,6 +55,16 @@ app.get('/api/casse/:id', verificaToken, (req, res) => {
     return res.status(404).json({ errore: 'Cassa non trovata' });
   }
   res.json(cassa);
+});
+// GET layout magazzino
+app.get('/api/layout/magazzino', verificaToken, (req, res) => {
+  res.json(layouts.magazzino);
+});
+
+// PUT aggiorna layout magazzino
+app.put('/api/layout/magazzino', verificaToken, (req, res) => {
+  layouts.magazzino = req.body;
+  res.sendStatus(204);
 });
 
 // === POST /api/casse (aggiungere una nuova cassa) ===
@@ -127,4 +141,4 @@ app.post('/api/pallets', verificaToken, (req, res) => {
   res.json(nuovoBancale);
 });
 // GET pallets
-app.get('/api/pallets', verificaToken, (req,res)=>res.json(bancali));
+app.get('/api/pallets', verificaToken, (req, res) => res.json(bancali));
