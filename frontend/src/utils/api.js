@@ -1,15 +1,14 @@
-// frontend/src/utils/api.js
+// src/utils/api.js
 import axios from 'axios';
 
-// 1) default baseURL al tuo backend
+// crea un’istanza con baseURL all’API backend
 const api = axios.create({
   baseURL: 'http://localhost:3001/api'
 });
 
-// 2) funzione per impostare il Bearer token su tutte le richieste
+// helper per settare il token una volta fatto il login
 export function setAuth(token) {
   api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 }
 
-// 3) esporta l’istanza
 export default api;
