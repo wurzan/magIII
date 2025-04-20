@@ -1,0 +1,34 @@
+name: SonarCloud
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  sonarcloud:
+    name: SonarCloud
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # serve per l'analisi completa
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'  # usa la versione che ti serve
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./frontend  # cambia qui se il tuo codice non è in /frontend
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v2
+        with:
+          projectBaseDir: ./frontend  # cambia anche qui se serve
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

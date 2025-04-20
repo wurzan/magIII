@@ -1,15 +1,27 @@
-// backend/models/index.js
 import { Sequelize } from 'sequelize';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-// ✅ Usa SQLite locale (nessun server esterno necessario)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname  = path.dirname(__filename);
+
+// Inizializza SQLite: crea (o apre) il file database.sqlite nella cartella backend
 const sequelize = new Sequelize({
   dialect: 'sqlite',
-  storage: './db.sqlite',  // il file verrà creato automaticamente
-  logging: false
+  storage: path.join(__dirname, '../database.sqlite'),
+  logging: false,
 });
 
-// Carica i modelli (aggiungi questi se non li hai già)
-import './Cassa.js';
-import './Materiale.js';
+// Importa i modelli per registrarli con Sequelize e definire relazioni
+import defineCassa from './Cassa.js';
+import defineMateriale from './Materiale.js';
 
-export default sequelize;
+// Definisci i modelli passandogli l'istanza di Sequelize
+const Cassa     = defineCassa(sequelize);
+const Materiale = defineMateriale(sequelize);
+
+// Definisci le associazioni
+Cassa.hasMany(Materiale, { foreignKey: 'cassaId', as: 'materiali' });
+Materiale.belongsTo(Cassa, { foreignKey: 'cassaId', as: 'cassa' });
+
+export { sequelize, Cassa, Materiale };
