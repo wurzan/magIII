@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
+import PropTypes from 'prop-types';
+
 
 function BoxDetails({ token }) {
   const { id } = useParams();
@@ -57,3 +59,8 @@ function BoxDetails({ token }) {
 }
 
 export default BoxDetails;
+BoxDetails.propTypes = {
+  token:       PropTypes.string.isRequired,
+  // se passi altre props, aggiungile qui
+};
+

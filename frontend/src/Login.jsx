@@ -1,6 +1,7 @@
 // src/Login.jsx
 import React, { useState } from 'react';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 
 function Login({ onLogin }) {
   const [username, setUsername] = useState('');
@@ -44,3 +45,7 @@ function Login({ onLogin }) {
 }
 
 export default Login;
+Login.propTypes = {
+  onLogin: PropTypes.func.isRequired
+};
+
