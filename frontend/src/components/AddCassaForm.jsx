@@ -1,8 +1,9 @@
 // src/components/AddCassaForm.jsx
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import api from '../utils/api';
+import { categories as CATEGORIE } from '../utils/category';
 import '../styles/App.css';
-import { categories } from '../utils/category';
 
 export default function AddCassaForm({ onAdded }) {
   const [codice, setCodice]       = useState('');
@@ -15,8 +16,10 @@ export default function AddCassaForm({ onAdded }) {
     try {
       const res = await api.post('/casse', payload);
       onAdded(res.data);
-      setCodice(''); setPosizione('');
+      setCodice('');
+      setPosizione('');
     } catch (err) {
+      console.error('Errore aggiunta cassa:', err);
       alert('Errore nell\'aggiunta: ' + err.message);
     }
   };
@@ -49,3 +52,7 @@ export default function AddCassaForm({ onAdded }) {
     </form>
   );
 }
+
+AddCassaForm.propTypes = {
+  onAdded: PropTypes.func.isRequired,
+};
