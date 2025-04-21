@@ -27,7 +27,7 @@ app.use(bodyParser.json());
 // Middleware per JWT
 const verificaToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
+  const token = req.headers.authorization?.split(' ')[1];
   if (!token) return res.sendStatus(401);
   jwt.verify(token, SEGRETO, (err, user) => {
     if (err) return res.sendStatus(403);
