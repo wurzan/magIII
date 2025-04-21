@@ -1,5 +1,6 @@
 // src/pages/MagazzinoDesign.jsx
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import GridLayout from 'react-grid-layout';
 import api, { setAuth } from '../utils/api';
 import CassaCard from '../components/CassaCard';
@@ -8,13 +9,12 @@ import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import '../styles/App.css';
 
-export default function MagazzinoDesign({ token }) {
+function MagazzinoDesign({ token }) {
   const [boxes, setBoxes]   = useState([]);
   const [layout, setLayout] = useState([]);
 
   useEffect(() => {
     setAuth(token);
-    // Carica casse e layout
     api.get('/casse')
       .then(res => {
         setBoxes(res.data);
@@ -24,11 +24,10 @@ export default function MagazzinoDesign({ token }) {
         if (res.data.length) {
           setLayout(res.data);
         } else {
-          // default: ogni cassa 2×1 (due colonne, una riga)
           const def = boxes.map((b, i) => ({
             i: String(b.id),
-            x: (i % 5) * 2,           // 5 elementi per riga
-            y: Math.floor(i / 5) * 1,
+            x: (i % 5) * 2,
+            y: Math.floor(i / 5),
             w: 2, h: 1
           }));
           setLayout(def);
@@ -47,7 +46,7 @@ export default function MagazzinoDesign({ token }) {
     const newItem = {
       i: String(newBox.id),
       x: (layout.length % 5) * 2,
-      y: Math.floor(layout.length / 5) * 1,
+      y: Math.floor(layout.length / 5),
       w: 2, h: 1
     };
     const updated = [...layout, newItem];
@@ -72,8 +71,8 @@ export default function MagazzinoDesign({ token }) {
       <GridLayout
         layout={layout}
         cols={10}
-        rowHeight={120}       /* griglia più alta */
-        width={900}           /* 10 colonne × 90px + margin */
+        rowHeight={120}
+        width={900}
         margin={[8, 8]}
         containerPadding={[0, 0]}
         onLayoutChange={onLayoutChange}
@@ -90,3 +89,9 @@ export default function MagazzinoDesign({ token }) {
     </div>
   );
 }
+
+MagazzinoDesign.propTypes = {
+  token: PropTypes.string.isRequired
+};
+
+export default MagazzinoDesign;
