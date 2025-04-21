@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import api, { setAuth } from '../utils/api';
 import CassaCard from '../components/CassaCard';
+import PropTypes from 'prop-types';
 
 export default function AssettoInternazionale({ token }) {
   const [pallets, setPallets] = useState([]);
@@ -9,8 +10,8 @@ export default function AssettoInternazionale({ token }) {
   useEffect(() => {
     setAuth(token);
     api.get('/pallets')
-       .then(res => setPallets(res.data))
-       .catch(console.error);
+      .then(res => setPallets(res.data))
+      .catch(console.error);
   }, [token]);
 
   return (
@@ -30,3 +31,6 @@ export default function AssettoInternazionale({ token }) {
     </div>
   )
 }
+AssettoInternazionale.propTypes = {
+  token: PropTypes.string.isRequired,
+};
