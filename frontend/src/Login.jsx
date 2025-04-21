@@ -10,12 +10,12 @@ function Login({ onLogin }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // L'endpoint deve corrispondere a quello del backend (in questo esempio: /api/login)
       const res = await axios.post('http://localhost:3001/api/login', { username, password });
       if (res.data.token) {
         onLogin(res.data.token);
       }
     } catch (error) {
+      console.error('Login error:', error);
       alert('Errore di login: credenziali non valide');
     }
   };
@@ -44,8 +44,8 @@ function Login({ onLogin }) {
   );
 }
 
-export default Login;
 Login.propTypes = {
-  onLogin: PropTypes.func.isRequired
+  onLogin: PropTypes.func.isRequired,
 };
 
+export default Login;
