@@ -47,3 +47,6 @@ export default function AssettoInternazionaleDesign({ token }) {
     </div>
   );
 }
+AssettoInternazionaleDesign.propTypes = {
+  token: PropTypes.string.isRequired
+};
