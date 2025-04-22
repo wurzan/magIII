@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
-import api, { setAuth } from './utils/api'; // ✅ IMPORT CORRETTO
+import api, { setAuthToken } from './utils/api'; // ✅ Usa il nome corretto
 
 function Login({ onLogin }) {
   const [username, setUsername] = useState('');
@@ -14,9 +14,9 @@ function Login({ onLogin }) {
     try {
       const res = await api.post('/login', { username, password });
       if (res.data.token) {
-        setAuth(res.data.token);
-        onLogin(res.data.token);      // Salva il token nello stato/app
-        navigate('/');                // Vai alla home
+        setAuthToken(res.data.token);   // ✅ Questo è il metodo giusto
+        onLogin(res.data.token);
+        navigate('/');
       }
     } catch (error) {
       console.error('Login error:', error);

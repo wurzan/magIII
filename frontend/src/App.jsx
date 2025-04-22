@@ -1,29 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// src/App.jsx
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './Login';
-import Home from './pages/Home';
 import MagazzinoView from './pages/MagazzinoView';
-import ProgettazioneView from './pages/ProgettazioneView';
+import MagazzinoDesign from './pages/MagazzinoDesign';
+import AssettoNazionale from './pages/AssettoNazionale';
 import AssettoNazionaleDesign from './pages/AssettoNazionaleDesign';
-import { setAuth } from './utils/api'; // ✅ nome corretto
+import AssettoInternazionale from './pages/AssettoInternazionale';
+import AssettoInternazionaleDesign from './pages/AssettoInternazionaleDesign';
 
 function App() {
-  const [token, setToken] = useState(localStorage.getItem('token'));
-
-  useEffect(() => {
-    if (token) {
-      setAuth(token); // ✅ nome corretto
-    }
-  }, [token]);
+  const [token, setToken] = useState(null);
 
   return (
     <Router>
       <Routes>
         <Route path="/login" element={<Login onLogin={setToken} />} />
-        <Route path="/" element={<Home />} />
-        <Route path="/magazzino" element={<MagazzinoView token={token} />} />
-        <Route path="/progettazione" element={<ProgettazioneView token={token} />} />
-        <Route path="/assetto" element={<AssettoNazionaleDesign token={token} />} />
+        <Route path="/" element={token ? <MagazzinoView token={token} /> : <Navigate to="/login" />} />
+        <Route path="/design" element={token ? <MagazzinoDesign token={token} /> : <Navigate to="/login" />} />
+        <Route path="/assetto-nazionale" element={token ? <AssettoNazionale token={token} /> : <Navigate to="/login" />} />
+        <Route path="/assetto-nazionale-design" element={token ? <AssettoNazionaleDesign token={token} /> : <Navigate to="/login" />} />
+        <Route path="/assetto-internazionale" element={token ? <AssettoInternazionale token={token} /> : <Navigate to="/login" />} />
+        <Route path="/assetto-internazionale-design" element={token ? <AssettoInternazionaleDesign token={token} /> : <Navigate to="/login" />} />
       </Routes>
     </Router>
   );
