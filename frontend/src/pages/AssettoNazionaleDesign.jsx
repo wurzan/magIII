@@ -1,5 +1,5 @@
-// frontend/src/pages/AssettoNazionaleDesign.jsx
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';               // ← import PropTypes
 import GridLayout from 'react-grid-layout';
 import api, { setAuth } from '../utils/api';
 import CassaCard from '../components/CassaCard';
@@ -15,11 +15,10 @@ export default function AssettoNazionaleDesign({ token }) {
     api.get('/casse')
        .then(res => {
          setBoxes(res.data);
-         // inizializza layout identico a MagazzinoDesign
-         const initial = res.data.map((b, i) => ({
+         const initial = res.data.map((b,i)=>({
            i: String(b.id),
-           x: (i % 6) * 2,
-           y: Math.floor(i / 6) * 2,
+           x: (i%6)*2,
+           y: Math.floor(i/6)*2,
            w: 2,
            h: 2
          }));
@@ -48,3 +47,8 @@ export default function AssettoNazionaleDesign({ token }) {
     </div>
   );
 }
+
+// ← validazione delle props
+AssettoNazionaleDesign.propTypes = {
+  token: PropTypes.string.isRequired,
+};

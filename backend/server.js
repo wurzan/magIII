@@ -8,6 +8,7 @@ import { sequelize, Cassa, Materiale, LayoutMagazzino } from './models/index.js'
 const app      = express();
 const PORT     = 3001;
 const SEGRETO  = 'supersegreto';
+app.disable('x-powered-by');
 
 app.use(cors({
   origin: 'http://localhost:5173',       // l’URL del tuo front
