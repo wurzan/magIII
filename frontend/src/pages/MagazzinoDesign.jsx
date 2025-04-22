@@ -1,4 +1,3 @@
-// src/pages/MagazzinoDesign.jsx
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import GridLayout from 'react-grid-layout';
@@ -28,7 +27,8 @@ function MagazzinoDesign({ token }) {
             i: String(b.id),
             x: (i % 5) * 2,
             y: Math.floor(i / 5),
-            w: 2, h: 1
+            w: 2,
+            h: 1
           }));
           setLayout(def);
         }
@@ -42,12 +42,18 @@ function MagazzinoDesign({ token }) {
   };
 
   const handleAdded = newBox => {
+    // garantiamo sempre materiali: []
+    if (!Array.isArray(newBox.materiali)) {
+      newBox.materiali = [];
+    }
     setBoxes(bs => [...bs, newBox]);
+
     const newItem = {
       i: String(newBox.id),
       x: (layout.length % 5) * 2,
       y: Math.floor(layout.length / 5),
-      w: 2, h: 1
+      w: 2,
+      h: 1
     };
     const updated = [...layout, newItem];
     setLayout(updated);
