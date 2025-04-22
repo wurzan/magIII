@@ -1,6 +1,7 @@
 import { Sequelize } from 'sequelize';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import defineLayout from './LayoutMagazzino.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname  = path.dirname(__filename);
@@ -19,9 +20,10 @@ import defineMateriale from './Materiale.js';
 // Definisci i modelli passandogli l'istanza di Sequelize
 const Cassa     = defineCassa(sequelize);
 const Materiale = defineMateriale(sequelize);
+const LayoutMagazzino = defineLayout(sequelize, Sequelize.DataTypes);
 
 // Definisci le associazioni
 Cassa.hasMany(Materiale, { foreignKey: 'cassaId', as: 'materiali' });
 Materiale.belongsTo(Cassa, { foreignKey: 'cassaId', as: 'cassa' });
 
-export { sequelize, Cassa, Materiale };
+export { sequelize, Cassa, Materiale, LayoutMagazzino };

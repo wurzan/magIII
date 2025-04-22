@@ -1,18 +1,22 @@
 // src/Login.jsx
 import React, { useState } from 'react';
-import axios from 'axios';
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
+import api, { setAuthToken } from './utils/api';
 
 function Login({ onLogin }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:3001/api/login', { username, password });
+      const res = await api.post('/login', { username, password });
       if (res.data.token) {
-        onLogin(res.data.token);
+        setAuthToken(res.data.token); // Setta header Authorization globalmente
+        onLogin(res.data.token);      // Salva il token nello stato/app
+        navigate('/');                // Vai alla home
       }
     } catch (error) {
       console.error('Login error:', error);

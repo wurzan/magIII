@@ -5,6 +5,7 @@ import api, { setAuth } from '../utils/api';
 import CassaCard from '../components/CassaCard';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
+import PropTypes from 'prop-types';
 
 export default function AssettoInternazionaleDesign({ token }) {
   const [boxes, setBoxes] = useState([]);

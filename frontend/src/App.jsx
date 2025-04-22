@@ -1,42 +1,56 @@
 // src/App.jsx
-import React, { useState } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate
+} from 'react-router-dom';
 
 import Login              from './Login';
-import BoxDetails         from './BoxDetails';
-
-import MagazzinoView            from './pages/MagazzinoView';
-import MagazzinoDesign          from './pages/MagazzinoDesign';
-import AssettoNazionale         from './pages/AssettoNazionale';
+import MagazzinoView      from './pages/MagazzinoView';
+import MagazzinoDesign    from './pages/MagazzinoDesign';
+import AssettoNazionale   from './pages/AssettoNazionale';
 import AssettoNazionaleDesign   from './pages/AssettoNazionaleDesign';
 import AssettoInternazionale    from './pages/AssettoInternazionale';
 import AssettoInternazionaleDesign from './pages/AssettoInternazionaleDesign';
 
+import { setAuthToken } from './utils/api';
+
 export default function App() {
-  const [token, setToken] = useState(localStorage.getItem('token') || null);
+  const [token, setToken] = useState(localStorage.getItem('token'));
+
+  useEffect(() => {
+    if (token) setAuthToken(token);
+  }, [token]);
+
   const handleLogin = (t) => {
     localStorage.setItem('token', t);
     setToken(t);
   };
 
   return (
-    <BrowserRouter>
+    <Router>
       <Routes>
         {!token
           ? <Route path="*" element={<Login onLogin={handleLogin} />} />
           : <>
-              <Route path="/" element={<MagazzinoView token={token} />} />
-              <Route path="/magazzino/design" element={<MagazzinoDesign token={token} />} />
+              {/* se vai su “/” ti manda a /magazzino */}
+              <Route path="/" element={<Navigate to="/magazzino" replace />} />
 
-              <Route path="/assetto-nazionale" element={<AssettoNazionale token={token} />} />
-              <Route path="/assetto-nazionale/design" element={<AssettoNazionaleDesign token={token} />} />
+              <Route path="/magazzino" element={<MagazzinoView />} />
+              <Route path="/magazzino/design" element={<MagazzinoDesign />} />
 
-              <Route path="/assetto-internazionale" element={<AssettoInternazionale token={token} />} />
-              <Route path="/assetto-internazionale/design" element={<AssettoInternazionaleDesign token={token} />} />
+              <Route path="/assetto-nazionale" element={<AssettoNazionale />} />
+              <Route path="/assetto-nazionale/design" element={<AssettoNazionaleDesign />} />
 
-              <Route path="/cassa/:id" element={<BoxDetails token={token} />} />
+              <Route path="/assetto-internazionale" element={<AssettoInternazionale />} />
+              <Route path="/assetto-internazionale/design" element={<AssettoInternazionaleDesign />} />
+
+              {/* eventuale dettaglio cassa */}
+              <Route path="/cassa/:id" element={null/*BoxDetails*/} />
             </> }
       </Routes>
-    </BrowserRouter>
+    </Router>
   );
 }

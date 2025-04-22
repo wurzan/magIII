@@ -3,13 +3,18 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import jwt from 'jsonwebtoken';
-import { sequelize, Cassa, Materiale } from './models/index.js';
+import { sequelize, Cassa, Materiale, LayoutMagazzino } from './models/index.js';
 
 const app      = express();
 const PORT     = 3001;
 const SEGRETO  = 'supersegreto';
 
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:5173',       // l’URL del tuo front
+  methods: ['GET','POST','PUT','DELETE'],
+  allowedHeaders: ['Content-Type','Authorization']
+}));
+
 app.use(bodyParser.json());
 
 // Inizializza DB e sincronizza i modelli
@@ -79,6 +84,19 @@ app.delete('/api/casse/:id', verificaToken, async (req, res) => {
 app.post('/api/casse/:id/materiali', verificaToken, async (req, res) => {
   const m = await Materiale.create({ ...req.body, cassaId: req.params.id });
   res.json(m);
+});
+
+// Legge l'ultimo layout salvato (o array vuoto)
+app.get('/api/layout/magazzino', verificaToken, async (req, res) => {
+  const last = await LayoutMagazzino.findOne({
+    order: [['createdAt', 'DESC']]
+  });
+  res.json(last ? last.contenuto : []);
+});
+// Salva un nuovo layout (body è l'array di celle)
+app.put('/api/layout/magazzino', verificaToken, async (req, res) => {
+  await LayoutMagazzino.create({ contenuto: req.body });
+  res.sendStatus(204);
 });
 
 // Avvio server
