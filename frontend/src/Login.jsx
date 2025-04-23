@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
-import api, { setAuthToken } from './utils/api'; // ✅ Usa il nome corretto
+import api, { setAuthToken } from './utils/api';
 
 function Login({ onLogin }) {
   const [username, setUsername] = useState('');
@@ -14,7 +14,7 @@ function Login({ onLogin }) {
     try {
       const res = await api.post('/login', { username, password });
       if (res.data.token) {
-        setAuthToken(res.data.token);   // ✅ Questo è il metodo giusto
+        setAuthToken(res.data.token);
         onLogin(res.data.token);
         navigate('/');
       }

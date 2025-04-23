@@ -1,10 +1,11 @@
+// frontend/src/utils/api.js
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:3001/api', // Assicurati che questa sia la tua base URL corretta
+  baseURL: 'http://localhost:3001/api',
 });
 
-// Funzione per settare il token globalmente negli header
+// ✅ Funzione corretta: esporta con nome giusto
 export const setAuthToken = (token) => {
   if (token) {
     api.defaults.headers.common['Authorization'] = `Bearer ${token}`;

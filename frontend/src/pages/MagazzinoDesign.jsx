@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import GridLayout from 'react-grid-layout';
-import api, { setAuth } from '../utils/api';
+import api, { setAuthToken } from '../utils/api';
 import CassaCard from '../components/CassaCard';
 import AddCassaForm from '../components/AddCassaForm';
 import 'react-grid-layout/css/styles.css';
@@ -13,7 +13,7 @@ function MagazzinoDesign({ token }) {
   const [layout, setLayout] = useState([]);
 
   useEffect(() => {
-    setAuth(token);
+    setAuthToken(token);
     api.get('/casse')
       .then(res => {
         setBoxes(res.data);
@@ -68,6 +68,8 @@ function MagazzinoDesign({ token }) {
     setLayout(ly);
     api.put('/layout/magazzino', ly).catch(console.error);
   };
+  console.log("Casse nel layout:", boxes);
+
 
   return (
     <div className="page-container">

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';               // ← import PropTypes
 import GridLayout from 'react-grid-layout';
-import api, { setAuth } from '../utils/api';
+import api, { setAuthToken } from '../utils/api';
 import CassaCard from '../components/CassaCard';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
@@ -11,7 +11,7 @@ export default function AssettoNazionaleDesign({ token }) {
   const [layout, setLayout] = useState([]);
 
   useEffect(() => {
-    setAuth(token);
+    setAuthToken(res.data.token);
     api.get('/casse')
        .then(res => {
          setBoxes(res.data);

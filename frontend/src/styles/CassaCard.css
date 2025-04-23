@@ -8,7 +8,7 @@
     box-shadow: 0 1px 4px rgba(0,0,0,0.1);
   
     /* RAPPORTO 4:3, per es. larghezza 100%, altezza 75% */
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 1 / 1; 
     display: flex;
     flex-direction: column;
     justify-content: space-between;

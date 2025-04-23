@@ -1,6 +1,6 @@
 // frontend/src/pages/AssettoInternazionale.jsx
 import React, { useEffect, useState } from 'react';
-import api, { setAuth } from '../utils/api';
+import api, { setAuthToken } from '../utils/api';
 import CassaCard from '../components/CassaCard';
 import PropTypes from 'prop-types';
 
@@ -8,7 +8,7 @@ export default function AssettoInternazionale({ token }) {
   const [pallets, setPallets] = useState([]);
 
   useEffect(() => {
-    setAuth(token);
+    setAuthToken(res.data.token);
     api.get('/pallets')
       .then(res => setPallets(res.data))
       .catch(console.error);
