@@ -1,30 +1,12 @@
-/* src/styles/MagazzinoView.css */
-
 .mag-view-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
-  padding: 24px;
-  max-width: 1200px;
-  margin: 0 auto;
-  box-sizing: border-box;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+  padding: 16px;
 }
-
 .mag-view-container p {
+  grid-column: 1 / -1;
   text-align: center;
   font-size: 1.1rem;
   color: #555;
-}
-
-.mag-view-container a {
-  display: block;
-  text-align: center;
-  margin-top: 12px;
-  color: #0077cc;
-  font-weight: bold;
-  text-decoration: none;
-}
-
-.mag-view-container a:hover {
-  text-decoration: underline;
 }

@@ -1,0 +1,11 @@
+.layout-wrapper {
+    display: flex;
+    min-height: 100vh;
+  }
+  
+  .layout-main {
+    flex: 1;
+    padding: 16px;
+    overflow-x: auto;
+  }
+  
